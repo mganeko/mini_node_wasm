@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <script>
+      // build wast --> wasm
+      // $ emsdk/clang/e1.38.11_64bit/binaryen/bin/wasm-as fizzbuzz_func.wast
+
+      const imports = {
+        imported_putn: function(arg) { // built-in function putn(): for put i32 to console
+          console.log(arg);
+          let line = arg + '<br />';
+          outputDiv.innerHTML += line;
+        },
+        imported_puts: function(offset) { // built-in function puts(): for put static string to console
+          let str = '';
+          let arr = new Uint8Array(exported_string.buffer);
+          for (let i = offset; arr[i]; i++) {
+            str += String.fromCharCode(arr[i]);
+          }
+          console.log(str);
+          let line = str + '<br />';
+          outputDiv.innerHTML += line;
+        }
+      };
+
+      let ret = null;
+      let exported_string = null;
+
+      function execWasm(wasmfile) {
+        fetch(wasmfile).then(response =>
+          response.arrayBuffer()
+        ).then(bytes => WebAssembly.instantiate(bytes, { imports: imports })
+        ).then(result => {
+          exported_string = result.instance.exports.exported_string;
+          let ret = result.instance.exports.exported_main();
+          console.log('ret=' + ret);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="output_div">
+    </div>
+  </body>
+  <script>
+    const outputDiv = document.getElementById('output_div');
+    execWasm('fizzbuzz_func.js.wasm');
+  </script>
+</html>
