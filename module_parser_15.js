@@ -94,7 +94,17 @@ function simplify(exp) {
 
   // --- Extra 2 ---
   if (exp.type === 'UnaryExpression') {
-    return [exp.operator, simplify(exp.argument)];
+    //return [exp.operator, simplify(exp.argument)];
+
+    if (exp.operator === '-') {
+      // minus value
+      const valueExp = simplify(exp.argument);
+      const baseExp = ['lit', 0];
+      return ['-', baseExp, valueExp];
+    }
+    else {
+      return [exp.operator, simplify(exp.argument)];
+    }
   }
   if (exp.type === 'LogicalExpression') {
     return [exp.operator, simplify(exp.left), simplify(exp.right)];

@@ -25,7 +25,7 @@
 //   - 07: multi args
 //   - 07: ret
 //   - 07: call user defined / builtin
-//   - dummy ret code?
+//   - 08: dummy ret code?
 //   - 07: generate function code
 //   - 07: declare local variable in func
 //   - 07: self call (fib)

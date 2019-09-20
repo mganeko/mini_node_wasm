@@ -136,6 +136,7 @@ TestSingleStdout fib_func.js
 TestSingleStdout fizzbuzz_func2.js
 TestSingleStdout fizzbuzz_func3.js
 TestSingleStdout fib_func2.js
+TestSingleStdout minus_value.js
 
 # --- report --
 Report
