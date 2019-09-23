@@ -1,0 +1,283 @@
+;; builtin_func_template.watx
+;;  - builtin function putn()/puts() for WASI
+
+  ;; --- builtin functions ---
+  (func $putn(param $n i32)
+    (local $strLen i32)
+    get_local $n
+    call $_convI32ToString ;; ret=Lenght
+
+    ;; tail LF
+    i32.const 1
+    i32.add
+    set_local $strLen
+    get_local $strLen
+    i32.const 10 ;; LF
+    i32.store8 
+
+    ;; iov.iov_base 
+    i32.const 4
+    i32.const 12
+    i32.store
+
+    ;; iov.iov_len
+    i32.const 8
+    get_local $strLen
+    i32.store
+
+    ;; $fd_write
+    i32.const 1 ;; file_descriptor - 1 for stdout
+    i32.const 4 ;; *iovs - The pointer to the iov array, which is stored at memory location 0
+    i32.const 1 ;; iovs_len - We're printing 1 string stored in an iov - so one.
+    i32.const 0 ;; nwritten - A place in memory to store the number of bytes writen
+    call $fd_write
+
+    drop ;; Discard the number of bytes written from the top the stack
+  )
+
+  (func $puts (param $n i32)
+    (local $srcIdx i32)
+    (local $destIdx i32)
+    (local $len i32)
+    (local $c i32)
+    get_local $n
+    set_local $srcIdx
+
+    i32.const 0
+    set_local $destIdx
+
+    i32.const 0
+    set_local $len
+
+    get_local $srcIdx
+    call $_loadChar
+
+    set_local $c
+
+    loop ;; --begin of while loop--
+      get_local $c      
+      if
+        get_local $destIdx
+        get_local $c
+        call $_storeChar
+
+        get_local $len
+        i32.const 1
+        i32.add
+
+        set_local $len
+
+        get_local $srcIdx
+        i32.const 1
+        i32.add
+
+        set_local $srcIdx
+
+        get_local $destIdx
+        i32.const 1
+        i32.add
+
+        set_local $destIdx
+
+        get_local $srcIdx
+        call $_loadChar
+        set_local $c
+
+        br 1 ;; --jump to head of while loop--
+      end ;; end of if-then
+    end ;; --end of while loop--
+
+    ;;get_local $len
+    ;;call $putn
+
+    ;; tail LF
+    get_local $destIdx
+    i32.const 10 ;; LF
+    call $_storeChar
+    drop ;; Discard the number of bytes written from the top the stack
+
+    get_local $len
+    i32.const 1
+    i32.add
+    set_local $len
+
+    ;; iov.iov_base 
+    i32.const 4
+    i32.const 12
+    i32.store
+
+    ;; iov.iov_len
+    i32.const 8
+    get_local $len
+    i32.store
+
+
+    ;; $fd_write
+    i32.const 1 ;; file_descriptor - 1 for stdout
+    i32.const 4 ;; *iovs - The pointer to the iov array, which is stored at memory location 0
+    i32.const 1 ;; iovs_len - We're printing 1 string stored in an iov - so one.
+    i32.const 0 ;; nwritten - A place in memory to store the number of bytes writen
+    call $fd_write
+
+    drop ;; Discard the number of bytes written from the top the stack 
+  )
+
+  ;; --- inner function ---
+  (func $_calcLength (param $n i32) (result i32)
+    (local $restValue i32)
+    (local $len i32)
+    get_local $n
+    set_local $restValue
+
+    i32.const 1
+    set_local $len
+
+    loop ;; --begin of while loop--
+      get_local $restValue
+      i32.const 10
+      i32.ge_s
+      if
+        get_local $restValue
+        i32.const 10
+        i32.div_s
+
+        set_local $restValue
+
+        get_local $len
+        i32.const 1
+        i32.add
+
+        set_local $len
+
+        br 1 ;; --jump to head of while loop--
+      end ;; end of if-then
+    end ;; --end of while loop--
+    get_local $len
+    return
+
+    ;;i32.const 88
+    ;;return
+  )
+
+  (func $_getOneDigit (param $n i32) (result i32)
+    (local $r i32)
+    (local $c i32)
+    get_local $n
+    i32.const 10
+    i32.rem_s
+
+    set_local $r
+
+    i32.const 48
+    get_local $r
+    i32.add
+
+    set_local $c
+
+    get_local $c
+    return
+
+    ;;i32.const 88
+    ;;return
+  )
+
+  (func $_div10 (param $n i32) (result i32)
+    (local $d i32)
+    get_local $n
+    i32.const 10
+    i32.div_s
+
+    set_local $d
+
+    get_local $d
+    return
+
+    ;;i32.const 88
+    ;;return
+  )
+
+  (func $_storeChar (param $idx i32) (param $charCode i32) (result i32)
+    get_local $idx
+    i32.const 12 ;; start offset of string buffer
+    i32.add
+
+    get_local $charCode
+    
+    i32.store8
+
+    i32.const 88
+    return
+  )
+
+  (func $_convI32ToString (param $n i32) (result i32)
+    (local $restValue i32)
+    (local $len i32)
+    (local $idx i32)
+    (local $digitChar i32)
+    get_local $n
+    set_local $restValue
+
+    get_local $restValue
+    call $_calcLength
+
+    set_local $len
+
+    ;; tail LF
+    get_local $len
+    i32.const 12
+    i32.add
+    i32.const 10  ;; LF
+    i32.store8
+
+    get_local $len
+    i32.const 1
+    i32.sub
+
+    set_local $idx
+
+    i32.const 0
+    set_local $digitChar
+
+    loop ;; --begin of while loop--
+      get_local $idx
+      i32.const 0
+      i32.ge_s
+      if
+        get_local $restValue
+        call $_getOneDigit
+
+        set_local $digitChar
+
+        get_local $idx
+        get_local $digitChar
+        call $_storeChar
+
+        get_local $restValue
+        call $_div10
+
+        set_local $restValue
+
+        get_local $idx
+        i32.const 1
+        i32.sub
+
+        set_local $idx
+
+        br 1 ;; --jump to head of while loop--
+      end ;; end of if-then
+    end ;; --end of while loop--
+
+    get_local $len
+    return
+  )
+
+
+  (func $_loadChar (param $idx i32) (result i32)
+    get_local $idx
+    i32.load8_u
+
+    return
+  )
+
+  ;; --- builtin functions end ---
+
