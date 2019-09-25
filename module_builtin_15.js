@@ -28,6 +28,9 @@ const consoleLog = require('./module_consolelog.js');
 const isDouble = require('./module_isdouble.js');
 const putf = require('./module_putf.js');
 
+// --- for wasi ---
+const wasiBuiltin = require('./module_wasibuiltin.js');
+
 
 // === exports ===
 module.exports = callBuiltinByName;
@@ -62,4 +65,7 @@ let builtins = {
   // --- for double ---
   'isDouble': isDouble,
   'putf': putf,
+
+  // --- for wasi ---
+  'wasiBuiltin': wasiBuiltin,
 };

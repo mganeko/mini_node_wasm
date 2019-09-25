@@ -18,6 +18,8 @@ const callBuiltinByName = require('./module_builtin_15.js');
 const printWarn = require('./module_printwarn.js');
 //const isDouble = require('./module_isdouble.js');
 
+// --- for wasi ---
+const wasiBuiltin = require('./module_wasibuiltin.js');
 
 // --- for console.log ---
 //const consoleLog = console.log;
@@ -321,6 +323,9 @@ let genv = {
   'isDouble': ['builtin', 'isDouble'],
   //'putf' : ['builtin', 'println'],
   'putf': ['builtin', 'putf'],
+
+  // --- for wasi ---
+  'wasiBuiltin': ['builtin', 'wasiBuiltin'],
 };
 let lenv = {};
 
