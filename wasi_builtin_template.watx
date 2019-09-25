@@ -83,7 +83,13 @@
         call $_loadChar
         set_local $c
 
-        br 1 ;; --jump to head of while loop--
+        ;; check lenght 255
+        get_local $destIdx
+        i32.const 255
+        i32.lt_s
+        br_if 1
+        
+        ;; br 1 ;; --jump to head of while loop--
       end ;; end of if-then
     end ;; --end of while loop--
 
@@ -94,7 +100,6 @@
     get_local $destIdx
     i32.const 10 ;; LF
     call $_storeChar
-    drop ;; Discard the number of bytes written from the top the stack
 
     get_local $len
     i32.const 1
@@ -196,7 +201,7 @@
     ;;return
   )
 
-  (func $_storeChar (param $idx i32) (param $charCode i32) (result i32)
+  (func $_storeChar (param $idx i32) (param $charCode i32)
     get_local $idx
     i32.const 12 ;; start offset of string buffer
     i32.add
@@ -205,8 +210,8 @@
     
     i32.store8
 
-    i32.const 88
-    return
+    ;; i32.const 88
+    ;; return
   )
 
   (func $_convI32ToString (param $n i32) (result i32)

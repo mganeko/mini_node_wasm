@@ -30,6 +30,11 @@
 //   - 07: declare local variable in func
 //   - 07: self call (fib)
 // - wasi
+//   - putn()
+//     - plus value
+//     - TODO: support minus value 
+//   - puts()
+//     - limit length 255
 
 // refer https://www.kabuku.co.jp/developers/webassembly
 // refer https://blog.scottlogic.com/2018/04/26/webassembly-by-hand.html
