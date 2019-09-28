@@ -13,6 +13,8 @@ compiler=mininode_wasm_08.js
 
 interpreter=mininode_15.js
 
+compiler_wasi=mininode_wasm_wasi.js
+
 
 # --- summary ---
 case_count=0
@@ -72,6 +74,29 @@ TestSingleStdout() {
   fi
 }
 
+TestSingleWasiStdout() {
+  # --- exec 1 test case for wasi --
+  testfile=$1
+
+  # usage:
+  #  sh test_wasi_stdout.sh compilername interpname filename 
+  #
+  sh test_wasi_stdout.sh $compiler_wasi $interpreter $testfile
+  last_case_exit=$?
+
+  # --- check test result--
+  case_count=$(($case_count+1))
+  if [ "$last_case_exit" -eq 0 ]
+  then
+    # -- test OK --
+    ok_count=$(($ok_count+1))
+    echo "$testfile ... OK" >> $summary_file 
+  else
+    # -- test NG --
+    err_count=$(($err_count+1))
+    echo "$testfile ... NG" >> $summary_file 
+  fi
+}
 
 Report() {
   echo "===== test finish ======"
@@ -138,6 +163,52 @@ TestSingleStdout fizzbuzz_func3.js
 TestSingleStdout fib_func2.js
 TestSingleStdout minus_value.js
 TestSingleStdout putn_minus_puts.js
+
+# ---- exec test case for wasi -----
+echo "===== test for wasi ======"
+echo "===== test for wasi ======" >> $summary_file
+
+# step_01
+TestSingleWasiStdout eight.js
+
+# step_02
+TestSingleWasiStdout add.js
+TestSingleWasiStdout add_many.js
+TestSingleWasiStdout binoperator.js
+
+# step_03
+TestSingleWasiStdout putn.js
+TestSingleWasiStdout multi_lines.js
+TestSingleWasiStdout var0.js
+TestSingleWasiStdout var.js
+
+# step_04
+TestSingleWasiStdout neq.js
+TestSingleWasiStdout comp.js
+
+# step_05
+TestSingleWasiStdout if1.js
+TestSingleWasiStdout if0.js
+TestSingleWasiStdout if.js
+TestSingleWasiStdout while.js
+
+# step_06
+TestSingleWasiStdout putn_puts.js
+TestSingleWasiStdout fizzbuzz_loop.js
+
+# step_07
+TestSingleWasiStdout func_add.js
+TestSingleWasiStdout fizzbuzz_func.js
+TestSingleWasiStdout fib_func.js
+
+# step_08
+TestSingleWasiStdout fizzbuzz_func2.js
+TestSingleWasiStdout fizzbuzz_func3.js
+TestSingleWasiStdout fib_func2.js
+TestSingleWasiStdout minus_value.js
+TestSingleWasiStdout putn_minus_puts.js
+
+
 
 # --- report --
 Report
