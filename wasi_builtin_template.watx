@@ -6,14 +6,20 @@
     (local $strLen i32)
     get_local $n
     call $_convI32ToString ;; ret=Lenght
+    set_local $strLen
 
-    ;; tail LF
+    ;; write tail LF
+    i32.const 12 ;; head of string buffer
+    get_local $strLen
+    i32.add
+    i32.const 10 ;; LF
+    i32.store8 
+
+    ;; +1 length for tail LF
+    get_local $strLen
     i32.const 1
     i32.add
     set_local $strLen
-    get_local $strLen
-    i32.const 10 ;; LF
-    i32.store8 
 
     ;; iov.iov_base 
     i32.const 4
@@ -214,25 +220,57 @@
     ;; return
   )
 
+  (func $_isMinus (param $n i32) (result i32)
+    get_local $n
+    i32.const 0
+    i32.lt_s
+
+    if
+      i32.const 1
+      return
+    end
+
+    i32.const 0
+    return
+
+    ;;i32.const 88
+    ;;return
+  )
+
   (func $_convI32ToString (param $n i32) (result i32)
     (local $restValue i32)
+    (local $isMinus i32)
     (local $len i32)
     (local $idx i32)
     (local $digitChar i32)
     get_local $n
     set_local $restValue
 
+    i32.const 0
+    set_local $isMinus
+
+    get_local $n
+    call $_isMinus
+
+    if
+      i32.const 0
+      get_local $n
+      i32.sub
+
+      set_local $restValue
+
+      i32.const 1
+      set_local $isMinus
+
+      i32.const 0
+      i32.const 45
+      call $_storeChar
+
+    end
+
     get_local $restValue
     call $_calcLength
-
     set_local $len
-
-    ;; tail LF
-    get_local $len
-    i32.const 12
-    i32.add
-    i32.const 10  ;; LF
-    i32.store8
 
     get_local $len
     i32.const 1
@@ -254,6 +292,9 @@
         set_local $digitChar
 
         get_local $idx
+        get_local $isMinus
+        i32.add
+
         get_local $digitChar
         call $_storeChar
 
@@ -273,6 +314,9 @@
     end ;; --end of while loop--
 
     get_local $len
+    get_local $isMinus
+    i32.add
+
     return
   )
 

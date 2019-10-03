@@ -20,6 +20,6 @@ module.exports = wasiBuiltin;
 
 function wasiBuiltin() {
   const builtinFuncs = fs.readFileSync(builtinTamplateFile, 'utf-8');
-  println(builtinFuncs);
+  //println(builtinFuncs);
   return builtinFuncs;
 }
