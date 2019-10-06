@@ -19,8 +19,13 @@
 
 ## 前提環境
 
+macOS 10.14で動作を確認 / tested on macOS 10.14
+
 - node v10.x
-- wasmtime
+- wabt ... The WebAssembly Binary Toolkit: [WebAssembly/wabt](https://github.com/WebAssembly/wabt)
+  - ビルドにはCMakeが必要 / use CMake for build
+- wasmtime ... Standalone JIT-style runtime for WebAssembly, using Cranelift: [CraneStation/wasmtime](https://github.com/CraneStation/wasmtime)
+  - ビルドにはrust & cargoが必要 / use rust & cargo for build
 
 ## 使い方
 
