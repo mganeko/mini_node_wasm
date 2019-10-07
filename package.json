@@ -1,0 +1,31 @@
+{
+  "name": "mini_node_wasm",
+  "version": "1.0.0",
+  "description": "mini Node.js to WASM compiler by Node.js",
+  "main": "mininode_wasm_08.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "cd test && sh test_multi.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mganeko/mini_node_wasm.git"
+  },
+  "keywords": [
+    "node.js",
+    "WebAssembly",
+    "WASM",
+    "WASI"
+  ],
+  "author": "mganeko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mganeko/mini_node_wasm/issues"
+  },
+  "homepage": "https://github.com/mganeko/mini_node_wasm#readme",
+  "dependencies": {
+    "esprima": "^4.0.1"
+  }
+}
