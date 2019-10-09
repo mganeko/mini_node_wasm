@@ -29,6 +29,31 @@ macOS 10.14で動作を確認 / tested on macOS 10.14
 
 ## 使い方
 
+### WASMコンパイラー
+
+- jsファイルを用意（※仕様には制限あり）
+  - 仮に source.js とする
+- テキスト表現ファイル(.watファイル)にコンパイル
+  - $ node mininode_wasm_08.js source.js
+  - generated.wat が生成される
+- WASM(.wasm)に変換
+  - $ wat2wasm generated.wat
+  - generated.wasm が生成される
+- WASMを実行
+  - $ node runwasm_bultin.js generated.wat
+
+### WASI コンパイラー
+
+- jsファイルを用意（※仕様には制限あり）
+  - 仮に source.js とする
+- テキスト表現ファイル(.watファイル)にコンパイル
+  - $ node mininode_wasm_wasi.js source.js
+  - generated.wat が生成される
+- WASIを実行
+  - $ wasmtime generated.wat
+
+
+
 ## License / ライセンス
 
 * This sample is under the MIT license
