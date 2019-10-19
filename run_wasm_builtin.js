@@ -9,15 +9,15 @@ const fs = require('fs');
 const filename = process.argv[2]; // 対象とするwasmファイル名
 console.warn('Loading wasm file: ' + filename);
 
-let source = fs.readFileSync(filename);
-let typedArray = new Uint8Array(source);
+const source = fs.readFileSync(filename);
+const typedArray = new Uint8Array(source);
 
 
 const imports = {
-  imported_putn: function(arg) { // built-in function putn(): for put i32 to console
+  imported_putn: function (arg) { // built-in function putn(): for put i32 to console
     console.log(arg);
   },
-  imported_puts: function(offset) { // built-in function puts(): for put static string to console
+  imported_puts: function (offset) { // built-in function puts(): for put static string to console
     let str = '';
     let arr = new Uint8Array(exported_string.buffer);
     for (let i = offset; arr[i]; i++) {
@@ -30,7 +30,7 @@ const imports = {
 let ret = null;
 let exported_string = null;
 
-WebAssembly.instantiate(typedArray, 
+WebAssembly.instantiate(typedArray,
   { imports: imports }
 ).then(result => {
   exported_string = result.instance.exports.exported_string;
