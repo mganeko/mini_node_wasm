@@ -1,7 +1,7 @@
 
 function fizzbuzz(n) {
   let r = n;
-  if (n % (3*5) === 0) {
+  if (n % (3 * 5) === 0) {
     puts('FizzBuzz');
     r = 15;
   }
@@ -27,4 +27,4 @@ while (i <= 100) {
   i = i + 1;
 }
 
-//0;
+0;
