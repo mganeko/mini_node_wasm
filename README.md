@@ -52,7 +52,9 @@ macOS 10.14で動作を確認 / tested on macOS 10.14
 - WASIを実行
   - $ wasmtime generated.wat
 
+## 関連記事
 
+- [Node.jsでつくるNode.js-WASMコンパイラ - もくじ](https://qiita.com/massie_g/items/c663095759a80c53c126)
 
 ## License / ライセンス
 
