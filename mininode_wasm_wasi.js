@@ -112,7 +112,7 @@ function isStackEmpty(lctx) {
 
 let g_ctx = {
   'strIdx': 0, // string index
-  'strOffset': 128, // 0-->128 for WASI, // offset of next string
+  'strOffset': 512, // offset of next string : 0-->128--> more than 256 + 12 for WASI, 
   'strList': {}, // string hash:  strList['$s_1'] = ['xxxxx', offset, length]
   'funcList': {},  // function hash: funcList['func1'] = [func_type, func_symbol, ret_type, args_count, func_body]
   //  ex) funcList['add'] = ['user_defined', '$add', 'i32', 2, '.....']
