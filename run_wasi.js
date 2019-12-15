@@ -1,5 +1,7 @@
 // run_wasi.js
 //  refer https://nodejs.org/api/wasi.html
+//
+// node --experimental-wasi-unstable-preview0 run_wasi.js your_wasi.wasm
 
 'use strict'
 
